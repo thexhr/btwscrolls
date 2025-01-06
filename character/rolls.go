@@ -2,7 +2,6 @@ package character
 
 import (
 	"math/rand"
-	"time"
 )
 
 func dice(side int) int {
