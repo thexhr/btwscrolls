@@ -2,8 +2,11 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"strings"
+
 	"xosc.org/btwscrolls/cli"
+	"xosc.org/btwscrolls/clog"
 
 	"github.com/lmorg/readline"
 )
@@ -11,6 +14,10 @@ import (
 func main() {
 	rl := readline.NewInstance()
 	rl.TabCompleter = cli.Tab
+
+	log.SetFlags(0)
+
+	clog.DebugLog = true
 
 	for {
 		rl.SetPrompt("> ")
