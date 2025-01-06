@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
-
+	"xosc.org/btwscrolls/character"
 	"github.com/lmorg/readline"
 )
 
@@ -18,7 +18,7 @@ var commands = []command{
 	{cmd: "quit", callback: cmd_quit, desc: "quit"},
 	{cmd: "q", callback: cmd_quit, desc: "quit"},
 	{cmd: "cd", callback: cmd_cd, desc: "Switch to something else"},
-	{cmd: "ls", callback: cmd_ls, desc: "Show something else"},
+	{cmd: "create", callback: cmd_create, desc: "Create a new character"},
 }
 
 func cmd_quit(cmds []string) {
@@ -29,8 +29,8 @@ func cmd_cd(cmds []string) {
 	fmt.Println("Called cd with args:", cmds)
 }
 
-func cmd_ls(cmds []string) {
-	fmt.Println("Called ls")
+func cmd_create(cmds []string) {
+	character.CreateNewCharacter(cmds)
 }
 
 func FindCommand(cmd string) (command, error) {
