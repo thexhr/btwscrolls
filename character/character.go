@@ -11,8 +11,8 @@ import (
 
 type Character struct {
 	name            string
-	id              int
 	dead            bool
+	id              int
 	hp              int
 	hitDie          int
 	initiativeBonus int
