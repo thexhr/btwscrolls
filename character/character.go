@@ -50,7 +50,9 @@ type Mage struct {
 	xpPerLevel int
 }
 
-func CreateNewCharacter(name []string) {
+type CharacterInterface interface {
+	toString() string
+}
 
 	if len(name) == 0  || len(name[0]) == 0 {
 		fmt.Print("Enter a name for your character: ")
@@ -70,18 +72,29 @@ func CreateNewCharacter(name []string) {
 	fmt.Println("")
 	fmt.Println("Enter a number between 1 and 3")
 
+	var c CharacterInterface
 	switch AskForInt("Class [1-3]: ", 3) {
 		case 1:
-			var c Warrior
+			c = Warrior{
+				Character: Character {name: n},
+				knacks: 0,
+			}
 		case 2:
-			var c Rouge
+			c = Rouge {
+				Character: Character {name: n},
+			}
 		case 3:
-			var c Mage
+			c = Mage {
+				Character: Character {name: n},
+			}
 		default:
 			log.Println("Invalid character class")
-			return
+			return c
 	}
 
+	clog.Debug(c.toString())
+
+	return c
 }
 
 func AskForInt(desc string, maximum int) (ret int) {
