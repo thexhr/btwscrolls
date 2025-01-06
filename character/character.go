@@ -54,14 +54,26 @@ type CharacterInterface interface {
 	toString() string
 }
 
+func (c Character) toString() string {
+	return fmt.Sprintf("Name: %s Level: %d XP: %d/%d", c.name, c.level, c.exp, 1000)
+}
+
+func (c Warrior) toString() string {
+	return fmt.Sprintf("Name: %s Level: %d XP: %d/%d", c.name, c.level, c.exp, c.getXpMaxPerLevel())
+}
+
+func CreateNewCharacter(name []string) CharacterInterface {
+
+	var n string
 	if len(name) == 0  || len(name[0]) == 0 {
 		fmt.Print("Enter a name for your character: ")
-		var n string
 		if _, err := fmt.Scanln(&n); err != nil {
 			log.Fatalf("Error reading name: %v", err.Error())
 			os.Exit(1)
 		}
 		fmt.Println("Creating a character named", n)
+	} else {
+		n = name[0]
 	}
 
 	fmt.Println("What class shall your character be?")
