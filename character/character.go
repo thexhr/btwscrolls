@@ -124,6 +124,15 @@ newagain:
 		goto newagain
 	}
 
+	fmt.Printf("Now distribute the values to your abilities\n\n")
+
+	c.str = AskForInt("STR: ", 1, 19)
+	c.dex = AskForInt("DEX: ", 1, 19)
+	c.con = AskForInt("CON: ", 1, 19)
+	c.intel = AskForInt("INT: ", 1, 19)
+	c.wis = AskForInt("WIS: ", 1, 19)
+	c.cha = AskForInt("CHA: ", 1, 19)
+
 	fmt.Println("Choose an alignment for your character?")
 	fmt.Println("")
 	fmt.Println("1: Lawful")
@@ -132,6 +141,8 @@ newagain:
 	fmt.Println("")
 
 	c.alignment = AskForInt("Alignment [1-3]: ", 1, 3)
+
+	fmt.Println(c.toString())
 
 	return c
 }
