@@ -122,7 +122,7 @@ newagain:
 		goto newagain
 	}
 
-	fmt.Println("Chosse an alignment for your character?")
+	fmt.Println("Choose an alignment for your character?")
 	fmt.Println("")
 	fmt.Println("1: Lawful")
 	fmt.Println("2: Good")
