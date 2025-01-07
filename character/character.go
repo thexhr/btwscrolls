@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sort"
 	"strconv"
 
 	"xosc.org/btwscrolls/clog"
@@ -78,8 +79,6 @@ func (c Character) toString() string {
 
 func CreateNewCharacter(name []string) Character {
 
-func CreateNewCharacter(name []string) CharacterInterface {
-
 	var n string
 	if len(name) == 0  || len(name[0]) == 0 {
 		fmt.Print("Enter a name for your character: ")
@@ -100,27 +99,37 @@ func CreateNewCharacter(name []string) CharacterInterface {
 	fmt.Println("")
 	fmt.Println("Enter a number between 1 and 3")
 
-	var c CharacterInterface
-	switch AskForInt("Class [1-3]: ", 3) {
-		case 1:
-			c = Warrior{
-				Character: Character {name: n},
-				knacks: 0,
-			}
-		case 2:
-			c = Rouge {
-				Character: Character {name: n},
-			}
-		case 3:
-			c = Mage {
-				Character: Character {name: n},
-			}
-		default:
-			log.Println("Invalid character class")
-			return c
+	c := Character{name: n}
+	c.class = AskForInt("Class [1-3]: ", 1, 3)
+
+newagain:
+	abilityRolls := make([]int, 6)
+
+	fmt.Print("Rolled 6x 4d6 and added the highest results: ")
+	for i := range abilityRolls {
+		temp := rolls.RollDice(4, 6)
+		sort.Ints(temp)
+		sum := 0
+		for _, value := range temp[1:] {
+			sum += value
+		}
+		abilityRolls[i] = sum
 	}
 
-	clog.Debug(c.toString())
+	fmt.Println(abilityRolls)
+	fmt.Printf("\nDo you want to roll again? [Yes == 1/No == 0]: ")
+	if AskForInt("", 0, 1) == 1 {
+		goto newagain
+	}
+
+	fmt.Println("Chosse an alignment for your character?")
+	fmt.Println("")
+	fmt.Println("1: Lawful")
+	fmt.Println("2: Good")
+	fmt.Println("3: Evil")
+	fmt.Println("")
+
+	c.alignment = AskForInt("Alignment [1-3]: ", 1, 3)
 
 	return c
 }
