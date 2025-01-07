@@ -76,9 +76,7 @@ func (c Character) toString() string {
 	c.armor, c.baseAttackBonus, c.initiativeBonus, c.fortunePoints)
 }
 
-func (c Warrior) toString() string {
-	return fmt.Sprintf("Name: %s Level: %d XP: %d/%d", c.name, c.level, c.exp, c.getXpMaxPerLevel())
-}
+func CreateNewCharacter(name []string) Character {
 
 func CreateNewCharacter(name []string) CharacterInterface {
 
