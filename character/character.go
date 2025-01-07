@@ -27,6 +27,8 @@ type Character struct {
 	coppers         int
 	str             int
 	strBonus        int
+	con int
+	conBonus int
 	dex             int
 	dexBonus        int
 	wis             int
