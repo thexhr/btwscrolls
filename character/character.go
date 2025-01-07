@@ -14,6 +14,7 @@ type Character struct {
 	name            string
 	dead            bool
 	id              int
+	class			int
 	hp              int
 	hitDie          int
 	initiativeBonus int
@@ -33,22 +34,24 @@ type Character struct {
 	intelBonus      int
 	cha             int
 	chaBonus        int
+	alignment		int
 }
 
-type Warrior struct {
-	Character
-	knacks int
-	xpPerLevel int
-}
+const (
+	Warrior = 1
+	Rouge = 2
+	Mage = 3
+)
 
 type Rouge struct {
 	Character
 	xpPerLevel int
 }
 
-type Mage struct {
-	Character
-	xpPerLevel int
+	if bonus, exists := abilityBonuses[ability]; exists {
+		return bonus
+	}
+	return 0
 }
 
 type CharacterInterface interface {
@@ -145,85 +148,82 @@ func validateIntRange(cur int, minimum int, maximum int) error {
 	return nil
 }
 
-func (w Warrior) getXpMaxPerLevel() int {
-	switch w.level {
-		case 1:
-			return 0
-		case 2:
-			return 2000
-		case 3:
-			return 4000
-		case 4:
-			return 8000
-		case 5:
-			return 16000
-		case 6:
-			return 32000
-		case 7:
-			return 64000
-		case 8:
-			return 12000
-		case 9:
-			return 240000
-		case 10:
-			return 360000
-		default:
-			return 0
+func (w Character) getXpMaxPerLevel() int {
+	if w.class == Warrior {
+		switch w.level {
+			case 1:
+				return 0
+			case 2:
+				return 2000
+			case 3:
+				return 4000
+			case 4:
+				return 8000
+			case 5:
+				return 16000
+			case 6:
+				return 32000
+			case 7:
+				return 64000
+			case 8:
+				return 12000
+			case 9:
+				return 240000
+			case 10:
+				return 360000
+			default:
+				return 0
+			}
+	} else if w.class == Rouge {
+		switch w.level {
+			case 1:
+				return 0
+			case 2:
+				return 1500
+			case 3:
+				return 3000
+			case 4:
+				return 6000
+			case 5:
+				return 12000
+			case 6:
+				return 25000
+			case 7:
+				return 50000
+			case 8:
+				return 100000
+			case 9:
+				return 200000
+			case 10:
+				return 300000
+			default:
+				return 0
+		}
+	} else { // Mage
+		switch w.level {
+			case 1:
+				return 0
+			case 2:
+				return 2500
+			case 3:
+				return 5000
+			case 4:
+				return 10000
+			case 5:
+				return 20000
+			case 6:
+				return 40000
+			case 7:
+				return 80000
+			case 8:
+				return 150000
+			case 9:
+				return 300000
+			case 10:
+				return 400000
+			default:
+				return 0
+		}
 	}
 }
-
-func (w Rouge) getXpMaxPerLevel() int {
-	switch w.level {
-		case 1:
-			return 0
-		case 2:
-			return 1500
-		case 3:
-			return 3000
-		case 4:
-			return 6000
-		case 5:
-			return 12000
-		case 6:
-			return 25000
-		case 7:
-			return 50000
-		case 8:
-			return 100000
-		case 9:
-			return 200000
-		case 10:
-			return 300000
-		default:
-			return 0
-	}
-}
-
-func (w Mage) getXpMaxPerLevel() int {
-	switch w.level {
-		case 1:
-			return 0
-		case 2:
-			return 2500
-		case 3:
-			return 5000
-		case 4:
-			return 10000
-		case 5:
-			return 20000
-		case 6:
-			return 40000
-		case 7:
-			return 80000
-		case 8:
-			return 150000
-		case 9:
-			return 300000
-		case 10:
-			return 400000
-		default:
-			return 0
-	}
-}
-
 
