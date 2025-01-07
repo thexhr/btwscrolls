@@ -134,7 +134,7 @@ newagain:
 	return c
 }
 
-func AskForInt(desc string, maximum int) (ret int) {
+func AskForInt(desc string, minimum int, maximum int) (ret int) {
 again:
 
 	fmt.Print(desc)
@@ -150,7 +150,7 @@ again:
 		goto again
 	}
 
-	if err = validateIntRange(ret, 1, maximum); err != nil {
+	if err = validateIntRange(ret, minimum, maximum); err != nil {
 		log.Printf("%v", err.Error())
 		goto again
 	}
