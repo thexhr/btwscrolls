@@ -15,7 +15,7 @@ type Character struct {
 	name            string
 	dead            bool
 	id              int
-	class			int
+	class           int
 	hp              int
 	hitDie          int
 	initiativeBonus int
@@ -27,8 +27,8 @@ type Character struct {
 	coppers         int
 	str             int
 	strBonus        int
-	con int
-	conBonus int
+	con             int
+	conBonus        int
 	dex             int
 	dexBonus        int
 	wis             int
@@ -37,20 +37,20 @@ type Character struct {
 	intelBonus      int
 	cha             int
 	chaBonus        int
-	alignment		int
+	alignment       int
 }
 
 const (
 	Warrior = 1
-	Rouge = 2
-	Mage = 3
+	Rouge   = 2
+	Mage    = 3
 )
 
 func (c Character) getBonus(ability int) int {
 	abilityBonuses := map[int]int{
-		1:  -4, 2:  -3, 3: -3,
-		4:  -2, 5: -2, 6:  -1, 7: -1, 8: -1,
-		9:  0,  10: 0, 11: 0, 12: 0,
+		1: -4, 2: -3, 3: -3,
+		4: -2, 5: -2, 6: -1, 7: -1, 8: -1,
+		9: 0, 10: 0, 11: 0, 12: 0,
 		13: +1, 14: +1, 15: +1,
 		16: +2, 17: +2, 18: +3, 19: +3,
 	}
@@ -73,16 +73,16 @@ func (c Character) getAlignment() string {
 
 func (c Character) toString() string {
 	return fmt.Sprintf("Name: %s Level: %d XP: %d Alignment: %s\n\nSTR: %d (%d) DEX: %d (%d) WIS: %d (%d) INT: %d (%d) CHA: %d (%d)\n\nAC: %d BAB: %d, Initiative: %d Fortune Points: %d",
-	c.name, c.level, c.exp, c.getAlignment(),
-	c.str, c.getBonus(c.str), c.dex, c.getBonus(c.dex), c.wis, c.getBonus(c.wis),
-	c.intel, c.getBonus(c.intel), c.cha, c.getBonus(c.cha),
-	c.armor, c.baseAttackBonus, c.initiativeBonus, c.fortunePoints)
+		c.name, c.level, c.exp, c.getAlignment(),
+		c.str, c.getBonus(c.str), c.dex, c.getBonus(c.dex), c.wis, c.getBonus(c.wis),
+		c.intel, c.getBonus(c.intel), c.cha, c.getBonus(c.cha),
+		c.armor, c.baseAttackBonus, c.initiativeBonus, c.fortunePoints)
 }
 
 func CreateNewCharacter(name []string) Character {
 
 	var n string
-	if len(name) == 0  || len(name[0]) == 0 {
+	if len(name) == 0 || len(name[0]) == 0 {
 		fmt.Print("Enter a name for your character: ")
 		if _, err := fmt.Scanln(&n); err != nil {
 			log.Fatalf("Error reading name: %v", err.Error())
@@ -185,79 +185,78 @@ func validateIntRange(cur int, minimum int, maximum int) error {
 func (w Character) getXpMaxPerLevel() int {
 	if w.class == Warrior {
 		switch w.level {
-			case 1:
-				return 0
-			case 2:
-				return 2000
-			case 3:
-				return 4000
-			case 4:
-				return 8000
-			case 5:
-				return 16000
-			case 6:
-				return 32000
-			case 7:
-				return 64000
-			case 8:
-				return 12000
-			case 9:
-				return 240000
-			case 10:
-				return 360000
-			default:
-				return 0
-			}
+		case 1:
+			return 0
+		case 2:
+			return 2000
+		case 3:
+			return 4000
+		case 4:
+			return 8000
+		case 5:
+			return 16000
+		case 6:
+			return 32000
+		case 7:
+			return 64000
+		case 8:
+			return 12000
+		case 9:
+			return 240000
+		case 10:
+			return 360000
+		default:
+			return 0
+		}
 	} else if w.class == Rouge {
 		switch w.level {
-			case 1:
-				return 0
-			case 2:
-				return 1500
-			case 3:
-				return 3000
-			case 4:
-				return 6000
-			case 5:
-				return 12000
-			case 6:
-				return 25000
-			case 7:
-				return 50000
-			case 8:
-				return 100000
-			case 9:
-				return 200000
-			case 10:
-				return 300000
-			default:
-				return 0
+		case 1:
+			return 0
+		case 2:
+			return 1500
+		case 3:
+			return 3000
+		case 4:
+			return 6000
+		case 5:
+			return 12000
+		case 6:
+			return 25000
+		case 7:
+			return 50000
+		case 8:
+			return 100000
+		case 9:
+			return 200000
+		case 10:
+			return 300000
+		default:
+			return 0
 		}
 	} else { // Mage
 		switch w.level {
-			case 1:
-				return 0
-			case 2:
-				return 2500
-			case 3:
-				return 5000
-			case 4:
-				return 10000
-			case 5:
-				return 20000
-			case 6:
-				return 40000
-			case 7:
-				return 80000
-			case 8:
-				return 150000
-			case 9:
-				return 300000
-			case 10:
-				return 400000
-			default:
-				return 0
+		case 1:
+			return 0
+		case 2:
+			return 2500
+		case 3:
+			return 5000
+		case 4:
+			return 10000
+		case 5:
+			return 20000
+		case 6:
+			return 40000
+		case 7:
+			return 80000
+		case 8:
+			return 150000
+		case 9:
+			return 300000
+		case 10:
+			return 400000
+		default:
+			return 0
 		}
 	}
 }
-
