@@ -43,10 +43,14 @@ const (
 	Mage = 3
 )
 
-type Rouge struct {
-	Character
-	xpPerLevel int
-}
+func (c Character) getBonus(ability int) int {
+	abilityBonuses := map[int]int{
+		1:  -4, 2:  -3, 3: -3,
+		4:  -2, 5: -2, 6:  -1, 7: -1, 8: -1,
+		9:  0,  10: 0, 11: 0, 12: 0,
+		13: +1, 14: +1, 15: +1,
+		16: +2, 17: +2, 18: +3, 19: +3,
+	}
 
 	if bonus, exists := abilityBonuses[ability]; exists {
 		return bonus
@@ -54,12 +58,22 @@ type Rouge struct {
 	return 0
 }
 
-type CharacterInterface interface {
-	toString() string
+func (c Character) getAlignment() string {
+	if c.alignment == 1 {
+		return "Good"
+	} else if c.alignment == 2 {
+		return "Neutral"
+	} else {
+		return "Evil"
+	}
 }
 
 func (c Character) toString() string {
-	return fmt.Sprintf("Name: %s Level: %d XP: %d/%d", c.name, c.level, c.exp, 1000)
+	return fmt.Sprintf("Name: %s Level: %d XP: %d Alignment: %s\n\nSTR: %d (%d) DEX: %d (%d) WIS: %d (%d) INT: %d (%d) CHA: %d (%d)\n\nAC: %d BAB: %d, Initiative: %d Fortune Points: %d",
+	c.name, c.level, c.exp, c.getAlignment(),
+	c.str, c.getBonus(c.str), c.dex, c.getBonus(c.dex), c.wis, c.getBonus(c.wis),
+	c.intel, c.getBonus(c.intel), c.cha, c.getBonus(c.cha),
+	c.armor, c.baseAttackBonus, c.initiativeBonus, c.fortunePoints)
 }
 
 func (c Warrior) toString() string {
