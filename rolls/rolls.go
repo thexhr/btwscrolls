@@ -1,4 +1,4 @@
-package character
+package rolls
 
 import (
 	"math/rand"
