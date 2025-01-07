@@ -63,11 +63,11 @@ func (c Character) getBonus(ability int) int {
 
 func (c Character) getAlignment() string {
 	if c.alignment == 1 {
-		return "Good"
+		return "Lawful"
 	} else if c.alignment == 2 {
 		return "Neutral"
 	} else {
-		return "Evil"
+		return "Chaotic"
 	}
 }
 
@@ -136,8 +136,8 @@ newagain:
 	fmt.Println("Choose an alignment for your character?")
 	fmt.Println("")
 	fmt.Println("1: Lawful")
-	fmt.Println("2: Good")
-	fmt.Println("3: Evil")
+	fmt.Println("2: Neutral")
+	fmt.Println("3: Chaotic")
 	fmt.Println("")
 
 	c.alignment = AskForInt("Alignment [1-3]: ", 1, 3)
