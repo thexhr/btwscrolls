@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"xosc.org/btwscrolls/clog"
+	"xosc.org/btwscrolls/rolls"
 )
 
 type Character struct {
