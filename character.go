@@ -1,9 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
-	"encoding/json"
+	"math/rand"
 	"os"
 	"sort"
 	"strconv"
@@ -97,6 +98,7 @@ func CreateNewCharacter(name []string) Character {
 	fmt.Println("Enter a number between 1 and 3")
 
 	c := &Character{Name: n}
+	c.Id = rand.Intn(9999999)
 	c.Class = AskForInt("Class [1-3]: ", 1, 3)
 
 newagain:
