@@ -162,8 +162,6 @@ again:
 		goto again
 	}
 
-	clog.Debug("Read %d", ret)
-
 	return ret
 
 }
