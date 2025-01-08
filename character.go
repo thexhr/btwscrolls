@@ -32,6 +32,7 @@ type Character struct {
 	Intel           int
 	Cha             int
 	Alignment       int
+	next            *Character
 }
 
 const (
