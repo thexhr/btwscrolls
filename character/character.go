@@ -12,32 +12,26 @@ import (
 )
 
 type Character struct {
-	name            string
-	dead            bool
-	id              int
-	class           int
-	hp              int
-	hitDie          int
-	initiativeBonus int
-	armor           int
-	exp             int
-	level           int
-	baseAttackBonus int
-	fortunePoints   int
-	coppers         int
-	str             int
-	strBonus        int
-	con             int
-	conBonus        int
-	dex             int
-	dexBonus        int
-	wis             int
-	wisBonus        int
-	intel           int
-	intelBonus      int
-	cha             int
-	chaBonus        int
-	alignment       int
+	Name            string
+	Dead            bool
+	Id              int
+	Class           int
+	Hp              int
+	HitDie          int
+	InitiativeBonus int
+	Armor           int
+	Exp             int
+	Level           int
+	BaseAttackBonus int
+	FortunePoints   int
+	Coppers         int
+	Str             int
+	Con             int
+	Dex             int
+	Wis             int
+	Intel           int
+	Cha             int
+	Alignment       int
 }
 
 const (
@@ -62,9 +56,9 @@ func (c Character) getBonus(ability int) int {
 }
 
 func (c Character) getAlignment() string {
-	if c.alignment == 1 {
+	if c.Alignment == 1 {
 		return "Lawful"
-	} else if c.alignment == 2 {
+	} else if c.Alignment == 2 {
 		return "Neutral"
 	} else {
 		return "Chaotic"
@@ -73,10 +67,10 @@ func (c Character) getAlignment() string {
 
 func (c Character) toString() string {
 	return fmt.Sprintf("Name: %s Level: %d XP: %d Alignment: %s\n\nSTR: %d (%d) DEX: %d (%d) WIS: %d (%d) INT: %d (%d) CHA: %d (%d)\n\nAC: %d BAB: %d, Initiative: %d Fortune Points: %d",
-		c.name, c.level, c.exp, c.getAlignment(),
-		c.str, c.getBonus(c.str), c.dex, c.getBonus(c.dex), c.wis, c.getBonus(c.wis),
-		c.intel, c.getBonus(c.intel), c.cha, c.getBonus(c.cha),
-		c.armor, c.baseAttackBonus, c.initiativeBonus, c.fortunePoints)
+		c.Name, c.Level, c.Exp, c.getAlignment(),
+		c.Str, c.getBonus(c.Str), c.Dex, c.getBonus(c.Dex), c.Wis, c.getBonus(c.Wis),
+		c.Intel, c.getBonus(c.Intel), c.Cha, c.getBonus(c.Cha),
+		c.Armor, c.BaseAttackBonus, c.InitiativeBonus, c.FortunePoints)
 }
 
 func CreateNewCharacter(name []string) Character {
@@ -101,8 +95,8 @@ func CreateNewCharacter(name []string) Character {
 	fmt.Println("")
 	fmt.Println("Enter a number between 1 and 3")
 
-	c := Character{name: n}
-	c.class = AskForInt("Class [1-3]: ", 1, 3)
+	c := &Character{Name: n}
+	c.Class = AskForInt("Class [1-3]: ", 1, 3)
 
 newagain:
 	abilityRolls := make([]int, 6)
@@ -126,12 +120,12 @@ newagain:
 
 	fmt.Printf("Now distribute the values to your abilities\n\n")
 
-	c.str = AskForInt("STR: ", 1, 19)
-	c.dex = AskForInt("DEX: ", 1, 19)
-	c.con = AskForInt("CON: ", 1, 19)
-	c.intel = AskForInt("INT: ", 1, 19)
-	c.wis = AskForInt("WIS: ", 1, 19)
-	c.cha = AskForInt("CHA: ", 1, 19)
+	c.Str = AskForInt("STR: ", 1, 19)
+	c.Dex = AskForInt("DEX: ", 1, 19)
+	c.Con = AskForInt("CON: ", 1, 19)
+	c.Intel = AskForInt("INT: ", 1, 19)
+	c.Wis = AskForInt("WIS: ", 1, 19)
+	c.Cha = AskForInt("CHA: ", 1, 19)
 
 	fmt.Println("Choose an alignment for your character?")
 	fmt.Println("")
@@ -140,7 +134,7 @@ newagain:
 	fmt.Println("3: Chaotic")
 	fmt.Println("")
 
-	c.alignment = AskForInt("Alignment [1-3]: ", 1, 3)
+	c.Alignment = AskForInt("Alignment [1-3]: ", 1, 3)
 
 	fmt.Println(c.toString())
 
@@ -183,8 +177,8 @@ func validateIntRange(cur int, minimum int, maximum int) error {
 }
 
 func (w Character) getXpMaxPerLevel() int {
-	if w.class == Warrior {
-		switch w.level {
+	if w.Class == Warrior {
+		switch w.Level {
 		case 1:
 			return 0
 		case 2:
@@ -208,8 +202,8 @@ func (w Character) getXpMaxPerLevel() int {
 		default:
 			return 0
 		}
-	} else if w.class == Rouge {
-		switch w.level {
+	} else if w.Class == Rouge {
+		switch w.Level {
 		case 1:
 			return 0
 		case 2:
@@ -234,7 +228,7 @@ func (w Character) getXpMaxPerLevel() int {
 			return 0
 		}
 	} else { // Mage
-		switch w.level {
+		switch w.Level {
 		case 1:
 			return 0
 		case 2:
