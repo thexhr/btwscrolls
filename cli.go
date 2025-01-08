@@ -2,10 +2,8 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"strings"
-	"xosc.org/btwscrolls/character"
 	"github.com/lmorg/readline"
+	"strings"
 )
 
 type command struct {
@@ -15,22 +13,58 @@ type command struct {
 }
 
 var commands = []command{
-	{cmd: "quit", callback: cmd_quit, desc: "quit"},
-	{cmd: "q", callback: cmd_quit, desc: "quit"},
-	{cmd: "cd", callback: cmd_cd, desc: "Switch to something else"},
+	{cmd: "cd", callback: cmd_cd, desc: "Switch to a character"},
+	{cmd: "cds", callback: cmd_cds, desc: "Switch to a character and show details"},
+	{cmd: "ls", callback: cmd_ls, desc: "Show all characters"},
 	{cmd: "create", callback: cmd_create, desc: "Create a new character"},
 }
 
-func cmd_quit(cmds []string) {
-	os.Exit(0)
+func cmd_cd(cmds []string) {
+	/* We got no argument and there is no character loaded */
+	if len(cmds) == 0 && CurChar == nil {
+		fmt.Println("Provide the name of a character as argument")
+		if !GlobalList.listEmpty() {
+			fmt.Println("")
+			fmt.Println("You currently have the following characters:")
+			GlobalList.showAllCharacters()
+		}
+		return
+		/* We got no argument and there is a character loaded */
+	} else if len(cmds) == 0 && CurChar != nil {
+		CurChar = nil
+		rl.SetPrompt("> ")
+		return
+		/* We got an argument and there is no/a character loaded */
+	} else if len(cmds) > 0 {
+		temp, err := GlobalList.returnChar(cmds[0])
+		if err != nil {
+			fmt.Printf("%v", err.Error())
+			return
+		}
+		CurChar = temp
+		p := fmt.Sprintf("%s > ", cmds[0])
+		rl.SetPrompt(p)
+	}
 }
 
-func cmd_cd(cmds []string) {
-	fmt.Println("Called cd with args:", cmds)
+func cmd_cds(cmds []string) {
+	cmd_cd(cmds)
+	fmt.Println(CurChar.toString())
+}
+
+func cmd_ls(cmds []string) {
+	if err := GlobalList.showAllCharacters(); err != nil {
+		fmt.Printf("Error: %v\n", err.Error())
+	}
 }
 
 func cmd_create(cmds []string) {
-	character.CreateNewCharacter(cmds)
+	c, err := CreateNewCharacter(cmds)
+	if err != nil {
+		fmt.Printf("%v", err.Error())
+		return
+	}
+	GlobalList.addCharToList(c)
 }
 
 func FindCommand(cmd string) (command, error) {
@@ -69,4 +103,3 @@ func Tab(line []rune, pos int, dtx readline.DelayedTabContext) (string, []string
 
 	return string(line[:pos]), suggestions, nil, readline.TabDisplayGrid
 }
-
