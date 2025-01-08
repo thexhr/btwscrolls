@@ -103,7 +103,6 @@ func CreateNewCharacter(name []string) (Character, error) {
 	c.Id = rand.Intn(9999999)
 	c.Class = AskForInt("Class [1-3]: ", 1, 3)
 
-	return *c, nil
 newagain:
 	abilityRolls := make([]int, 6)
 

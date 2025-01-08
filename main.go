@@ -36,10 +36,6 @@ func main() {
 	GlobalList = CharList{}
 
 	CurChar = nil
-	/*
-		x := Character{Name: "test", Intel: 18, Cha: 19}
-		GlobalList.addCharToList(x)
-	*/
 	if err := GlobalList.loadCharacters(); err != nil {
 		log.Fatalf("%v", err.Error())
 	}
