@@ -74,8 +74,7 @@ func (c Character) toString() string {
 		c.Armor, c.BaseAttackBonus, c.InitiativeBonus, c.FortunePoints)
 }
 
-func CreateNewCharacter(name []string) Character {
-
+func CreateNewCharacter(name []string) (Character, error) {
 	var n string
 	if len(name) == 0 || len(name[0]) == 0 {
 		fmt.Print("Enter a name for your character: ")
@@ -83,10 +82,14 @@ func CreateNewCharacter(name []string) Character {
 			log.Fatalf("Error reading name: %v", err.Error())
 			os.Exit(1)
 		}
-		fmt.Println("Creating a character named", n)
 	} else {
 		n = name[0]
 	}
+
+	if GlobalList.characterExists(n) {
+		return Character{}, fmt.Errorf("A character with that name already exists")
+	}
+	fmt.Println("Creating a character named", n)
 
 	fmt.Println("What class shall your character be?")
 	fmt.Println("")
@@ -100,6 +103,7 @@ func CreateNewCharacter(name []string) Character {
 	c.Id = rand.Intn(9999999)
 	c.Class = AskForInt("Class [1-3]: ", 1, 3)
 
+	return *c, nil
 newagain:
 	abilityRolls := make([]int, 6)
 
