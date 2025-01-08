@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"math/rand"
@@ -9,7 +8,6 @@ import (
 	"sort"
 	"strconv"
 
-	"xosc.org/btwscrolls/clog"
 	"xosc.org/btwscrolls/rolls"
 )
 
@@ -141,11 +139,7 @@ newagain:
 
 	fmt.Println(c.toString())
 
-	if err := c.saveCharacter(); err != nil {
-		log.Printf("%s\n", err.Error())
-	}
-
-	return *c
+	return *c, nil
 }
 
 func AskForInt(desc string, minimum int, maximum int) (ret int) {
@@ -258,23 +252,4 @@ func (w Character) getXpMaxPerLevel() int {
 			return 0
 		}
 	}
-}
-
-func (c Character) saveCharacter() error {
-	fmt.Println(c)
-	jsonData, err := json.Marshal(c)
-    if err != nil {
-        return fmt.Errorf("Error marshaling to JSON: %v", err)
-    }
-
-	fmt.Printf("%s", string(jsonData))
-
-    err = os.WriteFile(GetHomeDir() + "/characters.json", jsonData, 0644)
-    if err != nil {
-        return fmt.Errorf("Error writing to file: %v", err)
-    }
-
-    clog.Debug("Character saved to character.json")
-
-	return nil
 }
