@@ -1,8 +1,9 @@
-package character
+package main
 
 import (
 	"fmt"
 	"log"
+	"encoding/json"
 	"os"
 	"sort"
 	"strconv"
@@ -138,7 +139,11 @@ newagain:
 
 	fmt.Println(c.toString())
 
-	return c
+	if err := c.saveCharacter(); err != nil {
+		log.Printf("%s\n", err.Error())
+	}
+
+	return *c
 }
 
 func AskForInt(desc string, minimum int, maximum int) (ret int) {
@@ -251,4 +256,23 @@ func (w Character) getXpMaxPerLevel() int {
 			return 0
 		}
 	}
+}
+
+func (c Character) saveCharacter() error {
+	fmt.Println(c)
+	jsonData, err := json.Marshal(c)
+    if err != nil {
+        return fmt.Errorf("Error marshaling to JSON: %v", err)
+    }
+
+	fmt.Printf("%s", string(jsonData))
+
+    err = os.WriteFile(GetHomeDir() + "/characters.json", jsonData, 0644)
+    if err != nil {
+        return fmt.Errorf("Error writing to file: %v", err)
+    }
+
+    clog.Debug("Character saved to character.json")
+
+	return nil
 }
