@@ -49,7 +49,9 @@ func cmd_cd(cmds []string) {
 
 func cmd_cds(cmds []string) {
 	cmd_cd(cmds)
-	fmt.Println(CurChar.toString())
+	if CurChar != nil {
+		fmt.Println(CurChar.toString())
+	}
 }
 
 func cmd_ls(cmds []string) {
