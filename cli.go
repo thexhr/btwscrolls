@@ -20,6 +20,7 @@ var commands = []command{
 	{cmd: "skillcheck", callback: cmd_skillCheck, desc: "Roll a skill check"},
 }
 
+// cd loads the chracter given by cmds[0] or unloads the active character.
 func cmd_cd(cmds []string) {
 	/* We got no argument and there is no character loaded */
 	if len(cmds) == 0 && CurChar == nil {
@@ -48,6 +49,7 @@ func cmd_cd(cmds []string) {
 	}
 }
 
+// cds is cmd_cd() plus showing the Character struct as pretty print.
 func cmd_cds(cmds []string) {
 	cmd_cd(cmds)
 	if CurChar != nil {
@@ -55,7 +57,8 @@ func cmd_cds(cmds []string) {
 	}
 }
 
-func cmd_ls(cmds []string) {
+// ls lists the names of all esisting characters or nothing if none exist.
+func cmd_ls(_ []string) {
 	if err := GlobalList.showAllCharacters(); err != nil {
 		fmt.Printf("Error: %v\n", err.Error())
 	}
@@ -68,6 +71,10 @@ func cmd_create(cmds []string) {
 		return
 	}
 	GlobalList.addCharToList(c)
+	CurChar = &c
+
+	p := fmt.Sprintf("%s > ", c.Name)
+	rl.SetPrompt(p)
 }
 
 func cmd_skillCheck(cmds []string) {
