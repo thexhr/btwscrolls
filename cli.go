@@ -17,6 +17,7 @@ var commands = []command{
 	{cmd: "cds", callback: cmd_cds, desc: "Switch to a character and show details"},
 	{cmd: "ls", callback: cmd_ls, desc: "Show all characters"},
 	{cmd: "create", callback: cmd_create, desc: "Create a new character"},
+	{cmd: "skillcheck", callback: cmd_skillCheck, desc: "Roll a skill check"},
 }
 
 func cmd_cd(cmds []string) {
@@ -68,6 +69,26 @@ func cmd_create(cmds []string) {
 	}
 	GlobalList.addCharToList(c)
 }
+
+func cmd_skillCheck(cmds []string) {
+	if len(cmds) < 1 {
+		fmt.Println("You need to specify the ability and an optional bonus malus")
+		fmt.Println("")
+		fmt.Println("Example: skillcheck str 2")
+		return
+	}
+
+	if CurChar == nil {
+		return
+	}
+
+	if err := CurChar.skillCheck(cmds); err != nil {
+		fmt.Printf("%v\n", err.Error())
+	} else {
+		fmt.Println(" sucessfull")
+	}
+}
+
 
 func FindCommand(cmd string) (command, error) {
 	for _, v := range commands {
