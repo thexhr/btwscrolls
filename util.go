@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"strconv"
 )
 
 var btwscrollsHome string
@@ -28,3 +30,36 @@ func SetupBaseDir() {
 func GetHomeDir() string {
 	return btwscrollsHome
 }
+
+func AskForInt(desc string, minimum int, maximum int) (ret int) {
+again:
+	fmt.Print(desc)
+	var n string
+	if _, err := fmt.Scanln(&n); err != nil {
+		log.Printf("Error reading %s: %v", desc, err.Error())
+		goto again
+	}
+
+	ret, err := strconv.Atoi(n)
+	if err != nil {
+		log.Printf("Invalid input")
+		goto again
+	}
+
+	if err = validateIntRange(ret, minimum, maximum); err != nil {
+		log.Printf("%v", err.Error())
+		goto again
+	}
+
+	return ret
+
+}
+
+func validateIntRange(cur int, minimum int, maximum int) error {
+	if cur < minimum || cur > maximum {
+		return fmt.Errorf("Value out of range. It has to be between %d and %d", minimum, maximum)
+	}
+
+	return nil
+}
+
