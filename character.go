@@ -146,34 +146,50 @@ newagain:
 	return *c, nil
 }
 
-func AskForInt(desc string, minimum int, maximum int) (ret int) {
-again:
-
-	fmt.Print(desc)
-	var n string
-	if _, err := fmt.Scanln(&n); err != nil {
-		log.Printf("Error reading %s: %v", desc, err.Error())
-		goto again
+func (c Character) skillCheck(cmds []string) error {
+	var t int
+	switch(strings.ToLower(cmds[0])) {
+		case "str":
+			t = CurChar.Str
+		case "dex":
+			t = CurChar.Dex
+		case "con":
+			t = CurChar.Con
+		case "int":
+			t = CurChar.Intel
+		case "wis":
+			t = CurChar.Wis
+		case "cha":
+			t = CurChar.Cha
+		default:
+			return fmt.Errorf("Unknown ability, please choose from STR, DEX, CON, INT, WIS, CHA")
 	}
 
-	ret, err := strconv.Atoi(n)
-	if err != nil {
-		log.Printf("Invalid input")
-		goto again
+	res := rolls.RollDice(1, 20)
+
+	var modifier int
+	// An additional bonus/penalty was provided
+	if len(cmds) > 1 {
+		x, err := strconv.Atoi(cmds[1])
+		if err != nil {
+			return fmt.Errorf("Cannot convert bonus/penalty to number")
+		}
+		modifier = x
+
+		if err := validateIntRange(modifier, -20, 20); err != nil {
+			return fmt.Errorf("%v", err.Error())
+		}
+		var sign string
+		if modifier >= 0 {
+			sign = "+"
+		}
+		fmt.Printf("<%d> vs %d%s%d", res[0], t, sign, modifier)
+	} else {
+		fmt.Printf("<%d> vs %d", res[0], t)
 	}
 
-	if err = validateIntRange(ret, minimum, maximum); err != nil {
-		log.Printf("%v", err.Error())
-		goto again
-	}
-
-	return ret
-
-}
-
-func validateIntRange(cur int, minimum int, maximum int) error {
-	if cur < minimum || cur > maximum {
-		return fmt.Errorf("Value out of range. It has to be between %d and %d", minimum, maximum)
+	if res[0] > (t + modifier) {
+		return fmt.Errorf(" failed")
 	}
 
 	return nil
@@ -257,3 +273,4 @@ func (w Character) getXpMaxPerLevel() int {
 		}
 	}
 }
+
