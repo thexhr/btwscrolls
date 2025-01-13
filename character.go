@@ -33,6 +33,7 @@ type Character struct {
 	Intel           int
 	Cha             int
 	Alignment       int
+	LastActive		int
 	next            *Character
 }
 

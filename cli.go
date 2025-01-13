@@ -33,6 +33,7 @@ func cmd_cd(cmds []string) {
 		return
 		/* We got no argument and there is a character loaded */
 	} else if len(cmds) == 0 && CurChar != nil {
+		CurChar.LastActive = 0
 		CurChar = nil
 		rl.SetPrompt("> ")
 		return
@@ -43,9 +44,11 @@ func cmd_cd(cmds []string) {
 			fmt.Printf("%v", err.Error())
 			return
 		}
+		CurChar.LastActive = 0
 		CurChar = temp
 		p := fmt.Sprintf("%s > ", cmds[0])
 		rl.SetPrompt(p)
+		CurChar.LastActive = 1
 	}
 }
 

@@ -41,6 +41,8 @@ func main() {
 	}
 
 	rl.SetPrompt("> ")
+	GlobalList.loadLastActiveChar()
+
 	for {
 		line, err := rl.Readline()
 		if err != nil {
@@ -181,4 +183,22 @@ func (l *CharList) listEmpty() bool {
 	}
 
 	return true
+}
+
+func (l *CharList) loadLastActiveChar() {
+	if l.listEmpty() {
+		return
+	}
+
+	ptr := l.head
+	for ptr != nil {
+		if ptr.LastActive == 1 {
+			CurChar = ptr
+			p := fmt.Sprintf("%s > ", CurChar.Name)
+			rl.SetPrompt(p)
+			return
+		}
+		ptr = ptr.next
+	}
+
 }
