@@ -40,7 +40,7 @@ func main() {
 		log.Fatalf("%v", err.Error())
 	}
 
-	rl.SetPrompt("> ")
+	setPrompt("")
 	GlobalList.loadLastActiveChar()
 
 	for {
@@ -194,8 +194,7 @@ func (l *CharList) loadLastActiveChar() {
 	for ptr != nil {
 		if ptr.LastActive == 1 {
 			CurChar = ptr
-			p := fmt.Sprintf("%s > ", CurChar.Name)
-			rl.SetPrompt(p)
+			setPrompt(CurChar.Name)
 			return
 		}
 		ptr = ptr.next

@@ -63,3 +63,13 @@ func validateIntRange(cur int, minimum int, maximum int) error {
 	return nil
 }
 
+func setPrompt(prompt string) {
+	var p string
+	if len(prompt) == 0 {
+		p = fmt.Sprintf("> ")
+	} else {
+		p = fmt.Sprintf("%s > ", prompt)
+	}
+
+	rl.SetPrompt(p)
+}

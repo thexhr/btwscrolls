@@ -49,8 +49,7 @@ func cmd_cd(cmds []string) {
 		}
 
 		CurChar = temp
-		p := fmt.Sprintf("%s > ", cmds[0])
-		rl.SetPrompt(p)
+		setPrompt(cmds[0])
 		CurChar.LastActive = 1
 	}
 }
