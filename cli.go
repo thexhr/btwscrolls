@@ -44,7 +44,10 @@ func cmd_cd(cmds []string) {
 			fmt.Printf("%v", err.Error())
 			return
 		}
-		CurChar.LastActive = 0
+		if CurChar != nil {
+			CurChar.LastActive = 0
+		}
+
 		CurChar = temp
 		p := fmt.Sprintf("%s > ", cmds[0])
 		rl.SetPrompt(p)
