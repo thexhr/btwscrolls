@@ -94,10 +94,10 @@ func cmd_skillCheck(cmds []string) {
 		return
 	}
 
-	if err := CurChar.skillCheck(cmds); err != nil {
+	if str, err := CurChar.skillCheck(cmds); err != nil {
 		fmt.Printf("%v\n", err.Error())
 	} else {
-		fmt.Println(" sucessfull")
+		fmt.Printf("%v\n", str)
 	}
 }
 

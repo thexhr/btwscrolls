@@ -148,7 +148,8 @@ newagain:
 	return *c, nil
 }
 
-func (c Character) skillCheck(cmds []string) error {
+func (c Character) skillCheck(cmds []string) (string, error) {
+	var ret string
 	var t int
 	switch(strings.ToLower(cmds[0])) {
 		case "str":
@@ -164,37 +165,45 @@ func (c Character) skillCheck(cmds []string) error {
 		case "cha":
 			t = CurChar.Cha
 		default:
-			return fmt.Errorf("Unknown ability, please choose from STR, DEX, CON, INT, WIS, CHA")
+			return "", fmt.Errorf("Unknown ability, please choose from STR, DEX, CON, INT, WIS, CHA")
 	}
 
 	res := rolls.RollDice(1, 20)
+
+	if res[0] == 1 {
+		ret = fmt.Sprint("<1> - Critical success")
+		return ret, nil
+	} else if res[0] == 20 {
+		return "", fmt.Errorf("<20> - Critical failure")
+	}
 
 	var modifier int
 	// An additional bonus/penalty was provided
 	if len(cmds) > 1 {
 		x, err := strconv.Atoi(cmds[1])
 		if err != nil {
-			return fmt.Errorf("Cannot convert bonus/penalty to number")
+			return "", fmt.Errorf("Cannot convert bonus/penalty to number")
 		}
 		modifier = x
 
 		if err := validateIntRange(modifier, -20, 20); err != nil {
-			return fmt.Errorf("%v", err.Error())
+			return "", fmt.Errorf("%v", err.Error())
 		}
 		var sign string
 		if modifier >= 0 {
 			sign = "+"
 		}
-		fmt.Printf("<%d> vs %d%s%d", res[0], t, sign, modifier)
+		ret = fmt.Sprintf("<%d> vs %d%s%d", res[0], t, sign, modifier)
 	} else {
-		fmt.Printf("<%d> vs %d", res[0], t)
+		ret = fmt.Sprintf("<%d> vs %d", res[0], t)
 	}
 
 	if res[0] > (t + modifier) {
-		return fmt.Errorf(" failed")
+		return "", fmt.Errorf("%s failed", ret)
 	}
 
-	return nil
+	ret = fmt.Sprintf("%s success", ret)
+	return ret, nil
 }
 
 func (w Character) getXpMaxPerLevel() int {
