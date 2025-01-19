@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -43,6 +44,12 @@ func main() {
 	setPrompt("")
 	GlobalList.loadLastActiveChar()
 
+	var history []string
+	history, err := loadHistoryFromDisk()
+	if err != nil {
+		history = make([]string, 1)
+	}
+
 	for {
 		line, err := rl.Readline()
 		if err != nil {
@@ -58,11 +65,50 @@ func main() {
 
 		cmd := strings.TrimSpace(line)
 
-		// XXX add history
+		if len(history) > 0 {
+			history = append(history, cmd)
+		}
 		ExecuteCommand(cmd)
 	}
 
+	fmt.Println(rl.History.Dump())
+
 	GlobalList.saveCharacter()
+	writeHistoryToDisk(history)
+}
+
+func loadHistoryFromDisk() ([]string, error) {
+	var hist []string
+	f, err := os.Open(btwscrollsHome + "/history")
+	if err != nil {
+		return hist, fmt.Errorf("No history file present")
+	}
+	defer f.Close()
+
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		line := scanner.Text()
+		hist = append(hist, line)
+	}
+
+	return hist, nil
+}
+
+func writeHistoryToDisk(arr []string) error {
+	f, err := os.OpenFile(btwscrollsHome + "/history", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+
+	for _, line := range arr {
+		_, err := f.WriteString(line + "\n")
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	return nil
 }
 
 func (l *CharList) returnChar(name string) (*Character, error) {
